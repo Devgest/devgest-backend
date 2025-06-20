@@ -1,15 +1,12 @@
 package tech.devgest.backend.user.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import tech.devgest.backend.common.ApiRoutes;
+import tech.devgest.backend.auth.security.OAuth2Provider;
 
 import java.util.Collection;
 import java.util.Date;
@@ -18,8 +15,9 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@Table(name = ApiRoutes.USER)
+@Table(name = "users")
 @Entity
+@Builder
 @NoArgsConstructor
 public class User implements UserDetails {
     @Id
@@ -28,10 +26,7 @@ public class User implements UserDetails {
     private Integer id;
 
     @Column(nullable = false)
-    private String firstName;
-
-    @Column(nullable = false)
-    private String lastName;
+    private String name;
 
     @Column(unique = true, length = 100, nullable = false)
     private String email;
@@ -46,6 +41,10 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private OAuth2Provider oAuth2Provider;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

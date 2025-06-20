@@ -15,10 +15,7 @@ import tech.devgest.backend.user.model.User;
 public class RegisterRequest {
 
     @NotNull
-    private String firstName;
-
-    @NotNull
-    private String lastName;
+    private String name;
 
     @Email
     @NotNull
@@ -31,12 +28,10 @@ public class RegisterRequest {
 
 
     public User toUser(){
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        return user;
+        return User.builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .build();
     }
-
 }
